@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyNotes AI — Your Study Partner</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+<header class="topbar"><div class="brand-mark">S</div><div><strong>StudyNotes AI</strong><span>Your personal study partner · Agent 2</span></div><span class="top-pill">PLAN · LEARN · REVISE</span></header>
+<main class="shell">
+  <section class="hero"><div class="eyebrow">A STUDY PLAN THAT FITS YOUR LIFE</div><h1>Learn your way. <em>One day at a time.</em></h1><p>Chat with your study partner, upload notes or textbooks, and build a timetable around your subjects, available time, goals, and preferred study style.</p><div class="hero-tags"><span>Personal timetable</span><span>Study chat</span><span>Notes generator</span><span>Revision planner</span></div></section>
+  <nav class="tabs"><button class="tab active" data-tab="planner">My timetable</button><button class="tab" data-tab="chat">Chat with agent</button><button class="tab" data-tab="notes">Create notes</button></nav>
+  <section id="planner" class="tab-panel active">
+    <div class="workspace">
+      <section class="panel">
+        <div class="panel-heading"><div><span class="step">01</span><h2>Tell me your preferences</h2></div><span class="muted">Customize your plan</span></div>
+        <form id="planForm">
+          <div class="field"><label for="studentName">What should I call you? (optional)</label><input id="studentName" placeholder="Your name"></div>
+          <div class="field-row"><div class="field"><label for="studyDays">Study days</label><select id="studyDays"><option value="5">5 days per week</option><option value="6" selected>6 days per week</option><option value="7">Every day</option></select></div><div class="field"><label for="hours">Hours per day</label><select id="hours"><option value="1">1 hour</option><option value="2">2 hours</option><option value="3" selected>3 hours</option><option value="4">4 hours</option><option value="5">5 hours</option><option value="6">6 hours</option></select></div></div>
+          <div class="field-row"><div class="field"><label for="wake">Preferred start time</label><select id="wake"><option value="06:00">6:00 AM</option><option value="07:00" selected>7:00 AM</option><option value="08:00">8:00 AM</option><option value="09:00">9:00 AM</option><option value="16:00">4:00 PM</option><option value="18:00">6:00 PM</option><option value="19:00">7:00 PM</option></select></div><div class="field"><label for="break">Break length</label><select id="break"><option value="5">5 minutes</option><option value="10" selected>10 minutes</option><option value="15">15 minutes</option></select></div></div>
+          <div class="field"><label for="subjects">Subjects and topics</label><textarea id="subjects" required placeholder="Example: Cloud Computing — Week 1–4; ACD — Bottom-Up Parsing; Machine Learning — Decision Trees"></textarea></div>
+          <div class="field-row"><div class="field"><label for="goal">Main goal</label><select id="goal"><option>Prepare for exams</option><option>Understand concepts</option><option>Finish assignments</option><option>Prepare for a certification</option></select></div><div class="field"><label for="style">Study style</label><select id="style"><option value="pomodoro">25-minute focus sessions</option><option value="deep">Long focus sessions</option><option value="mixed">Mix of reading and practice</option></select></div></div>
+          <div class="field"><label for="deadline">Exam / deadline (optional)</label><input id="deadline" type="date"></div>
+          <button class="primary-btn" type="submit">Build my timetable <span>→</span></button>
+        </form>
+        <p id="planStatus" class="status" aria-live="polite">Your preferences are used to make a plan in this browser.</p>
+      </section>
+      <section class="panel"><div class="output-heading"><div><span class="step">02</span><h2>Your personalized timetable</h2></div><div class="actions"><button id="downloadPlan" class="secondary-btn" disabled>Download plan</button></div></div><div id="timetable" class="empty-state"><div class="paper-icon">▦</div><h3>Your week, organized</h3><p>Enter your subjects and preferences, then build your timetable.</p></div></section>
+    </div>
+  </section>
+  <section id="chat" class="tab-panel">
+    <div class="panel chat-panel"><div class="panel-heading"><div><span class="step">03</span><h2>Talk to your study agent</h2></div><span class="muted">Ask for timetable changes, explanations, or study tips</span></div><div class="chat-suggestions"><button class="suggestion">Make my timetable easier</button><button class="suggestion">I only have 1 hour today</button><button class="suggestion">Help me revise before my exam</button><button class="suggestion">Explain how to use this planner</button></div><div id="chatMessages" class="chat-messages"><div class="bubble agent"><strong>StudyNotes Agent</strong><p>Hi! Tell me what you need. I can help adjust the timetable you created, suggest a study routine, or explain how to prepare. To make a new plan, use the My timetable tab.</p></div></div><form id="chatForm" class="chat-input"><input id="chatInput" placeholder="Message your study agent…" autocomplete="off" required><button class="primary-btn" type="submit">Send ↑</button></form><p class="status">This demo uses a built-in assistant, not a live AI service. Connect a backend AI API for open-ended conversations.</p></div>
+  </section>
+  <section id="notes" class="tab-panel">
+    <div class="workspace">
+      <section class="panel"><div class="panel-heading"><div><span class="step">04</span><h2>Add study material</h2></div><span class="muted">Files are processed in this browser</span></div>
+        <label class="dropzone" id="dropzone" for="fileInput"><div class="upload-icon">↑</div><strong>Drop a file here or <u>browse files</u></strong><span>PDF, DOCX, TXT, Markdown · text-based PDFs work best</span><input id="fileInput" type="file" accept=".pdf,.docx,.txt,.md,.markdown" multiple></label><div id="fileList" class="file-list"></div>
+        <div class="or-divider"><span>OR PASTE YOUR TEXT</span></div><textarea id="sourceText" placeholder="Paste your notes or textbook chapter here…"></textarea>
+        <div class="field"><label for="topic">Topic / chapter (optional)</label><input id="topic" placeholder="e.g., Bottom-Up Parsing"></div>
+        <div class="field-row"><div class="field"><label for="length">Length</label><select id="length"><option value="short">Short</option><option value="medium" selected>Medium</option><option value="long">Detailed</option></select></div><div class="field"><label for="format">Answer format</label><select id="format"><option value="5-mark">5-mark answer</option><option value="10-mark">10-mark answer</option><option value="revision">Revision sheet</option></select></div></div>
+        <div class="notice"><strong>Prototype note:</strong> This version organizes text with rules, not a real AI model. Verify the notes against your textbook.</div><button id="generateBtn" class="primary-btn">Generate study notes <span>→</span></button><p id="status" class="status" aria-live="polite"></p>
+      </section>
+      <section class="panel"><div class="output-heading"><div><span class="step">05</span><h2>Your study notes</h2></div><div class="actions"><button id="copyBtn" class="secondary-btn" disabled>Copy</button><button id="downloadBtn" class="secondary-btn" disabled>Download .txt</button></div></div><div id="emptyState" class="empty-state"><div class="paper-icon">▤</div><h3>Your notes will appear here</h3><p>Upload or paste material, then generate notes.</p></div><article id="result" class="result" hidden></article></section>
+    </div>
+  </section>
+  <footer>StudyNotes AI · Your goals. Your pace. Your plan. <span>Agent 2 prototype</span></footer>
+</main><script src="app.js"></script></body></html>
